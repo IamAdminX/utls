@@ -614,6 +614,9 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&KeyShareExtension{[]KeyShare{
 					{Group: X25519},
 				}},
+				&SupportedPointsExtension{
+					SupportedPoints: []byte{0x00, 0x01, 0x02},
+				},
 				&UtlsPreSharedKeyExtension{},
 			},
 		}, nil

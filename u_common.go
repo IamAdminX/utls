@@ -621,6 +621,7 @@ var (
 	HelloChrome_87          = ClientHelloID{helloChrome, "87", nil, nil}
 	HelloChrome_96          = ClientHelloID{helloChrome, "96", nil, nil}
 	HelloChrome_100         = ClientHelloID{helloChrome, "100", nil, nil}
+	HelloChrome_101a        = ClientHelloID{helloChrome, "101a", nil, nil}
 	HelloChrome_102         = ClientHelloID{helloChrome, "102", nil, nil}
 	HelloChrome_106_Shuffle = ClientHelloID{helloChrome, "106", nil, nil} // TLS Extension shuffler enabled starting from 106
 

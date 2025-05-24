@@ -516,6 +516,101 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&UtlsPaddingExtension{GetPaddingLen: BoringPaddingStyle},
 			},
 		}, nil
+	case HelloChrome_101a:
+		return ClientHelloSpec{
+			CipherSuites: []uint16{
+				TLS_AES_256_GCM_SHA384,
+				TLS_CHACHA20_POLY1305_SHA256,
+				TLS_AES_128_GCM_SHA256,
+				TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+				TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+				TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
+				TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
+				TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,
+				TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256,
+				FAKE_TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
+				FAKE_TLS_DHE_RSA_WITH_AES_256_GCM_SHA384,
+				FAKE_OLD_TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256,
+				TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,
+				TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,
+				TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
+				TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
+				DISABLED_TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,
+				DISABLED_TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,
+				TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
+				TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+				FAKE_TLS_DHE_RSA_WITH_AES_128_CBC_SHA256,
+				FAKE_TLS_DHE_RSA_WITH_AES_256_CBC_SHA256,
+				TLS_RSA_WITH_AES_128_GCM_SHA256,
+				TLS_RSA_WITH_AES_256_GCM_SHA384,
+				TLS_RSA_WITH_AES_128_CBC_SHA256,
+				DISABLED_TLS_RSA_WITH_AES_256_CBC_SHA256,
+				TLS_RSA_WITH_AES_128_CBC_SHA,
+				TLS_RSA_WITH_AES_256_CBC_SHA,
+			},
+			CompressionMethods: []byte{
+				0x00, // compressionNone
+			},
+			Extensions: []TLSExtension{
+				&SNIExtension{},
+				&ExtendedMasterSecretExtension{},
+				&RenegotiationInfoExtension{Renegotiation: RenegotiateOnceAsClient},
+				&ALPNExtension{AlpnProtocols: []string{"h2", "http/1.1"}},
+				&SessionTicketExtension{},
+				&SupportedCurvesExtension{
+					Curves: []CurveID{
+						X25519,
+						CurveP256,
+						30,
+						CurveP521,
+						CurveP384,
+						FakeCurveFFDHE2048,
+						FakeCurveFFDHE3072,
+						FakeCurveFFDHE4096,
+						FakeCurveFFDHE6144,
+						FakeCurveFFDHE8192,
+					},
+				},
+				&GenericExtension{
+					Id:   22,
+					Data: []byte{0x00},
+				},
+				&SignatureAlgorithmsExtension{
+					SupportedSignatureAlgorithms: []SignatureScheme{
+						ECDSAWithP256AndSHA256,
+						ECDSAWithP384AndSHA384,
+						ECDSAWithP521AndSHA512,
+						Ed25519,
+						Ed25519,
+						PSSWithSHA256,
+						PSSWithSHA384,
+						PSSWithSHA384,
+						PKCS1WithSHA256,
+						PKCS1WithSHA384,
+						PKCS1WithSHA512,
+						0x303,
+						0x301,
+						0x302,
+						0x402,
+						0x502,
+						0x602,
+					},
+				},
+				&SupportedVersionsExtension{
+					Versions: []uint16{
+						VersionTLS13,
+						VersionTLS12,
+					},
+				},
+				&PSKKeyExchangeModesExtension{[]uint8{
+					PskModeDHE,
+				}},
+				&KeyShareExtension{[]KeyShare{
+					{Group: X25519},
+				}},
+				&UtlsPreSharedKeyExtension{},
+			},
+		}, nil
 	case HelloChrome_106_Shuffle:
 		return ClientHelloSpec{
 			CipherSuites: []uint16{
@@ -2728,7 +2823,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 						CertCompressionBrotli,
 					},
 				},
-				&ApplicationSettingsExtension{SupportedProtocols: []string{"h2"}},
+				&ApplicationSettingsExtensionNew{SupportedProtocols: []string{"h2"}},
 				&KeyShareExtension{
 					KeyShares: []KeyShare{
 						{Group: GREASE_PLACEHOLDER, Data: []byte{0x00}},

@@ -516,6 +516,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&UtlsPaddingExtension{GetPaddingLen: BoringPaddingStyle},
 			},
 		}, nil
+	// Chrome 101 android for tinder
 	case HelloChrome_101a:
 		return ClientHelloSpec{
 			TLSVersMin: VersionTLS13, // Because of ECDSA_brainpoolP___r1tls13_sha___ we need TLS 1.3 minimum here

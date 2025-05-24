@@ -60,7 +60,7 @@ const (
 	DISABLED_TLS_RSA_WITH_AES_256_CBC_SHA256         = uint16(0x003d)
 
 	FAKE_OLD_TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256 = uint16(0xcc15) // we can try to craft these ciphersuites
-	FAKE_TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256     = uint16(0xccAA)
+	FAKE_TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256     = uint16(0xccaa)
 	FAKE_TLS_DHE_RSA_WITH_AES_128_GCM_SHA256           = uint16(0x009e) // from existing pieces, if needed
 
 	FAKE_TLS_DHE_RSA_WITH_AES_128_CBC_SHA    = uint16(0x0033)

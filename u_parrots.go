@@ -518,6 +518,8 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 		}, nil
 	case HelloChrome_101a:
 		return ClientHelloSpec{
+			TLSVersMin: VersionTLS13, // Because of ECDSA_brainpoolP___r1tls13_sha___ we need TLS 1.3 minimum here
+			TLSVersMax: VersionTLS13,
 			CipherSuites: []uint16{
 				TLS_AES_256_GCM_SHA384,
 				TLS_CHACHA20_POLY1305_SHA256,
@@ -582,6 +584,9 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 						ECDSAWithP521AndSHA512,
 						Ed25519,
 						Ed25519,
+						ECDSA_brainpoolP256r1tls13_sha256,
+						ECDSA_brainpoolP384r1tls13_sha384,
+						ECDSA_brainpoolP512r1tls13_sha512,
 						PSSWithSHA256,
 						PSSWithSHA384,
 						PSSWithSHA384,

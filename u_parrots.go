@@ -2684,6 +2684,93 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&UtlsPreSharedKeyExtension{},
 			}),
 		}, nil
+	case HelloChrome_137:
+		return ClientHelloSpec{
+			CipherSuites: []uint16{
+				GREASE_PLACEHOLDER,
+				TLS_AES_128_GCM_SHA256,
+				TLS_AES_256_GCM_SHA384,
+				TLS_CHACHA20_POLY1305_SHA256,
+				TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+				TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+				TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
+				TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
+				TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,
+				TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256,
+				TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
+				TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+				TLS_RSA_WITH_AES_128_GCM_SHA256,
+				TLS_RSA_WITH_AES_256_GCM_SHA384,
+				TLS_RSA_WITH_AES_128_CBC_SHA,
+				TLS_RSA_WITH_AES_256_CBC_SHA,
+			},
+			CompressionMethods: []byte{
+				0x00, // compressionNone
+			},
+			Extensions: ShuffleChromeTLSExtensions([]TLSExtension{
+				&UtlsGREASEExtension{Value: GREASE_PLACEHOLDER},
+				&RenegotiationInfoExtension{Renegotiation: RenegotiateOnceAsClient},
+				&StatusRequestExtension{},
+				&SignatureAlgorithmsExtension{
+					SupportedSignatureAlgorithms: []SignatureScheme{
+						ECDSAWithP256AndSHA256,
+						PSSWithSHA256,
+						PKCS1WithSHA256,
+						ECDSAWithP384AndSHA384,
+						PSSWithSHA384,
+						PKCS1WithSHA384,
+						PSSWithSHA512,
+						PKCS1WithSHA512,
+					},
+				},
+				&UtlsCompressCertExtension{
+					Algorithms: []CertCompressionAlgo{
+						CertCompressionBrotli,
+					},
+				},
+				&ApplicationSettingsExtension{SupportedProtocols: []string{"h2"}},
+				&KeyShareExtension{
+					KeyShares: []KeyShare{
+						{Group: GREASE_PLACEHOLDER, Data: []byte{0x00}},
+						{Group: X25519MLKEM768},
+						{Group: CurveX25519},
+					},
+				},
+				&SupportedVersionsExtension{
+					Versions: []uint16{
+						VersionTLS13,
+						VersionTLS12,
+					},
+				},
+				&PSKKeyExchangeModesExtension{
+					Modes: []uint8{
+						PskModeDHE,
+					},
+				},
+				&SessionTicketExtension{},
+				&SupportedPointsExtension{SupportedPoints: []uint8{0}},
+				&ALPNExtension{
+					AlpnProtocols: []string{"h2", "http/1.1"},
+				},
+				&ExtendedMasterSecretExtension{},
+				&SNIExtension{},
+				&SCTExtension{},
+				&GREASEEncryptedClientHelloExtension{},
+				&SupportedCurvesExtension{
+					Curves: []CurveID{
+						CurveID(GREASE_PLACEHOLDER),
+						X25519MLKEM768,
+						CurveX25519,
+						CurveP256,
+						CurveP384,
+					},
+				},
+				&UtlsGREASEExtension{
+					Value: GREASE_PLACEHOLDER,
+				},
+				&UtlsPreSharedKeyExtension{},
+			}),
+		}, nil
 	default:
 		if id.Client == helloRandomized || id.Client == helloRandomizedALPN || id.Client == helloRandomizedNoALPN {
 			// Use empty values as they can be filled later by UConn.ApplyPreset or manually.
